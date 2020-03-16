@@ -95,6 +95,11 @@ MEASURES is used to define the projected values from the match using aggregate m
 
 The pattern defines the regular expression of events to be searched over the data stream. Pattern variables are user- defined and separated by spaces. Modifiers like **+** and **\*** can be used to modify the frequency of a variable when matching events.
 
+
+### Classifier() function
+
+Classifier function can be used in **MEASURES** to output the pattern names that were matched. It will output a list of strings, each one representing the pattern name matched.
+
 ### Example
 
 ```SQL
@@ -175,7 +180,8 @@ INTO output FROM input TIMESTAMP BY time
 MATCH_RECOGNIZE (
 	LIMIT DURATION (minute, 3)
 	MEASURES
- 		MAX(Dangerous.pressure) as pressure
+ 		MAX(Dangerous.pressure) as pressure,
+		Classifier() as matches
 	AFTER MATCH SKIP TO NEXT ROW
 	PATTERN (Normal+ Dangerous+)
 	DEFINE
